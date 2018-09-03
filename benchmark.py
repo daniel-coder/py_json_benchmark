@@ -26,13 +26,13 @@ if __name__ == '__main__':
             large_obj = json_loads(large_str)
             test_json[name].extend([large_str, large_obj])
 
-    for m, loads_func, dumps_func in [("json", json_loads, json_dumps),
-                                      ("ujson", ujson_loads, ujson_dumps),
-                                      ("simplejson", simplejson_loads, simplejson_dumps),
-                                      ]:
-        print("\n---------------------------------------\n", m)
+    for name, (test_count, json_str, json_obj) in test_json.items():
+        print("\n---------------------------------------\n", name)
         print("\t\t\t\t", "loads", "\t", "dumps")
-        for name, (test_count, json_str, json_obj) in test_json.items():
+        for m, loads_func, dumps_func in [("ujson", ujson_loads, ujson_dumps),
+                                          ("simplejson", simplejson_loads, simplejson_dumps),
+                                          ("json", json_loads, json_dumps),
+                                          ]:
             loads_time = round(timeit(lambda: loads_func(json_str), number=test_count), 3)
             dumps_time = round(timeit(lambda: dumps_func(json_obj), number=test_count), 3)
-            print("\t", name, "\t", loads_time, "\t", dumps_time)
+            print("%12s" % m, "\t", loads_time, "\t", dumps_time)
